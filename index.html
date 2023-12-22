@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Infinite Horizontal Scroll</title>
+    <style>
+      html {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0px;
+      }
+
+      #app {
+        gap: 200px;
+        height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: column;
+      }
+
+      ul {
+        gap: 1rem;
+        margin: 0px;
+        padding: 0px;
+        display: inline-flex;
+        list-style: none;
+
+        > li {
+          color: white;
+          padding: 8px 12px;
+          border-radius: 6px;
+          background-color: darkslategray;
+        }
+      }
+
+      .scroller {
+        gap: 1rem;
+        width: 600px;
+        display: flex;
+        overflow: hidden;
+        position: relative;
+
+        --mask-size: 32px;
+        mask: linear-gradient(
+          to right,
+          transparent,
+          white var(--mask-size),
+          white calc(100% - var(--mask-size)),
+          transparent
+        );
+
+        &[data-scroller-direction="right"] {
+          .scroller-inner {
+            animation-direction: reverse;
+          }
+        }
+
+        &[data-scroller-pause-on-hover="true"]:hover {
+          .scroller-inner {
+            animation-play-state: paused;
+          }
+        }
+      }
+
+      .scroller-inner {
+        animation: scroll 10s linear infinite;
+      }
+
+      @keyframes scroll {
+        to {
+          transform: translateX(calc(-100% - 1rem));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="scroller">
+        <ul class="scroller-inner">
+          <li>Java</li>
+          <li>Go</li>
+          <li>Javascript</li>
+          <li>Rust</li>
+          <li>Typescript</li>
+          <li>Php</li>
+          <li>C</li>
+          <li>C++</li>
+          <li>Ruby</li>
+          <li>OCaml</li>
+          <li>Python</li>
+          <li>Kotlin</li>
+          <li>Scala</li>
+          <li>Lisp</li>
+        </ul>
+      </div>
+
+      <div
+        class="scroller"
+        data-scroller-direction="right"
+        data-scroller-pause-on-hover="true"
+      >
+        <ul class="scroller-inner">
+          <li>
+            <a href="https://picsum.photos/id/1/32/32" target="_blank">
+              <img
+                crossorigin="anonymous"
+                src="https://picsum.photos/id/1/32/32"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://picsum.photos/id/2/32/32" target="_blank">
+              <img
+                crossorigin="anonymous"
+                src="https://picsum.photos/id/2/32/32"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://picsum.photos/id/3/32/32" target="_blank">
+              <img
+                crossorigin="anonymous"
+                src="https://picsum.photos/id/3/32/32"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://picsum.photos/id/4/32/32" target="_blank">
+              <img
+                crossorigin="anonymous"
+                src="https://picsum.photos/id/4/32/32"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      function setupScroller(scroller) {
+        const scrollerInner = scroller.querySelector(".scroller-inner");
+        while (scroller.scrollWidth < scroller.clientWidth * 2) {
+          const scrollerInnerClone = scrollerInner.cloneNode(true);
+          scrollerInnerClone.classList.add("scroller-inner-clone");
+          scroller.appendChild(scrollerInnerClone);
+        }
+      }
+
+      async function main() {
+        const scrollers = document.querySelectorAll(".scroller");
+        scrollers.forEach((scroller) => {
+          setupScroller(scroller);
+        });
+      }
+
+      main().catch((err) => console.error(err));
+    </script>
+  </body>
+</html>
