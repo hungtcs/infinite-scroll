@@ -144,11 +144,11 @@
     <script>
       function setupScroller(scroller) {
         const scrollerInner = scroller.querySelector(".scroller-inner");
-        while (scroller.scrollWidth < scroller.clientWidth * 2) {
+        do {
           const scrollerInnerClone = scrollerInner.cloneNode(true);
           scrollerInnerClone.classList.add("scroller-inner-clone");
           scroller.appendChild(scrollerInnerClone);
-        }
+        } while (scroller.scrollWidth < scroller.clientWidth * 2);
       }
 
       async function main() {
